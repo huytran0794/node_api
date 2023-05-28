@@ -9,12 +9,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// app.use(logger);
+app.use(logger);
 
 // Routes
-const userRouter = require("./routes/users");
-
-app.use("/users", userRouter);
+app.get("/api", rootRouter);
 
 // Logger
 function logger(req, res, next) {
