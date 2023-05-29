@@ -1,0 +1,2 @@
+1/ kết nối db
+2/ khởi tạo dao => liên kết tới table

@@ -1,8 +1,9 @@
-const express = require("express");
+import express from "express";
+import "dotenv/config";
+import cors from "cors";
+import rootRouter from "./routers/rootRouter.js";
+
 const app = express();
-const cors = require("cors");
-require("dotenv").config();
-app.set("view engine", "ejs");
 
 // Middleware Connections
 app.use(cors());
@@ -12,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(logger);
 
 // Routes
-app.get("/api", rootRouter);
+app.use("/api", rootRouter);
 
 // Logger
 function logger(req, res, next) {
