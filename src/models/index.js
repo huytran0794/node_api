@@ -1,11 +1,12 @@
 // chứa câu lệnh kết nối csdl bằng sequelize
 import { Sequelize } from "sequelize";
-
+import config from "../config/db.js";
 // thông tin kết nối csdl
-const sequelize = new Sequelize("db_food", "root", "123456", {
-  host: "localhost",
-  port: "3307",
-  dialect: "mysql",
+const { db_user, db_pass, db_database, db_host, db_port, db_dialect } = config;
+const sequelize = new Sequelize(db_database, db_user, db_pass, {
+  host: db_host,
+  port: db_port,
+  dialect: db_dialect,
 });
 
 try {

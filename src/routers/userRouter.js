@@ -3,13 +3,21 @@ import userController from "../controllers/userController.js";
 
 const userRouter = express.Router();
 
-const { getAllUser, getUserById, createUser, updateUser, deleteUser } =
-  userController;
+const {
+  likeRestaurant,
+  unlikeRestaurant,
+  getLikeResList,
+  rateRestaurant,
+  getRateResList,
+  orderFood,
+} = userController;
 
-userRouter.get("/", getAllUser);
-userRouter.get("/:id", getUserById);
-userRouter.post("/", createUser);
-userRouter.put("/:id", updateUser);
-userRouter.delete("/:id", deleteUser);
+userRouter.get("/liked/:userId", getLikeResList);
+userRouter.get("/rated/:userId", getRateResList);
+
+userRouter.post("/like", likeRestaurant);
+userRouter.post("/unlike", unlikeRestaurant);
+userRouter.post("/rate-restaurant", rateRestaurant);
+userRouter.post("/orderFood", orderFood);
 
 export default userRouter;

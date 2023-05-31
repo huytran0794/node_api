@@ -1,11 +1,16 @@
 // import models
 import responseHandler from "../config/response.js";
-import Food from "../models/food.js";
+import initModels from "../models/init-models.js";
+import sequelize from "../models/index.js";
+
+const models = initModels(sequelize);
+
+const Food = models.food;
 
 const foodController = {
   // get all food
   getAllFood: async (req, res) => {
-    let data = await Food.findAll();
+    let data = await Food.findAll({ include: "type" });
     res.status(200).send(data);
   },
 
@@ -17,9 +22,20 @@ const foodController = {
       responseHandler.success(res, data, "get food ok");
     } catch (error) {
       console.log(error);
-      // res.status(500).send("Lỗi BE", error);
       responseHandler.error(res, "Lỗi BE");
     }
+  },
+
+  getUserFoodOrder: async (req, res) => {
+    try {
+      // let data = await Order.findAll({
+      //   include: ["food", "user"],
+      // });
+      let data = await Food.findAll({
+        include: "user_id_user_orders",
+      });
+      responseHandler.success(res, data, "get user food order ok");
+    } catch (error) {}
   },
 
   //   get food by name
@@ -31,8 +47,6 @@ const foodController = {
   createFood: async (req, res) => {
     try {
       let { foodName, image, price, desc, type_id } = req.body;
-      console.log("body");
-      console.log({ foodName, image, price, desc, type_id });
       let model = { foodName, image, price, desc, type_id };
 
       let newFoodId = await Food.create({ ...model });

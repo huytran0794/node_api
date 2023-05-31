@@ -1,38 +1,69 @@
-// thuộc tính, kiểu dữ liệu
-// DAO cho đối tượng food
-
-import { DataTypes, Model } from "sequelize";
-import sequelize from "./index.js";
-class Food extends Model {}
-
-// tham số 1: định nghĩa các thuộc tính map với column ở trong table
-// tham số 2: kết nối dao với table
-Food.init(
-  {
-    food_id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      allowNull: false,
-      autoIncrement: true,
-    },
-    foodName: {
-      type: DataTypes.STRING,
-      field: "food_name",
-    },
-    image: {
-      type: DataTypes.STRING,
-    },
-    price: {
-      type: DataTypes.INTEGER,
-    },
-    desc: {
-      type: DataTypes.STRING,
-    },
-    type_id: {
-      type: DataTypes.INTEGER,
-    },
-  },
-  { sequelize, modelName: "Food", tableName: "food", timestamps: false }
-);
-
-export default Food;
+// const Sequelize = require('sequelize');
+import Sequelize from "sequelize";
+export default (sequelize, DataTypes) => {
+  return food.init(sequelize, DataTypes);
+};
+class food extends Sequelize.Model {
+  static init(sequelize, DataTypes) {
+    return super.init(
+      {
+        food_id: {
+          autoIncrement: true,
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+        },
+        food_name: {
+          type: DataTypes.STRING(255),
+          allowNull: true,
+        },
+        image: {
+          type: DataTypes.STRING(255),
+          allowNull: true,
+        },
+        price: {
+          type: DataTypes.INTEGER,
+          allowNull: true,
+        },
+        desc: {
+          type: DataTypes.STRING(255),
+          allowNull: true,
+        },
+        type_id: {
+          type: DataTypes.INTEGER,
+          allowNull: true,
+          references: {
+            model: "food_type",
+            key: "type_id",
+          },
+        },
+      },
+      {
+        sequelize,
+        tableName: "food",
+        timestamps: false,
+        indexes: [
+          {
+            name: "PRIMARY",
+            unique: true,
+            using: "BTREE",
+            fields: [
+              {
+                name: "food_id",
+              },
+            ],
+          },
+          {
+            name: "type_id",
+            using: "BTREE",
+            fields: [
+              {
+                name: "type_id",
+              },
+            ],
+          },
+        ],
+      }
+    );
+  }
+}
