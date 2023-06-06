@@ -5,6 +5,28 @@ import rootRouter from "./routers/rootRouter.js";
 
 const app = express();
 
+// add swagger
+import swaggerUi from "swagger-ui-express";
+import swaggerJSDoc from "swagger-jsdoc";
+
+const options = {
+  definition: {
+    info: {
+      title: "api",
+      version: "1.0.0",
+    },
+  },
+  apis: ["src/swagger/index.js"],
+};
+
+const specs = swaggerJSDoc(options);
+
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(specs, { explorer: true })
+);
+
 // Middleware Connections
 app.use(cors());
 app.use(express.json());
